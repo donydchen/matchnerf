@@ -1,0 +1,52 @@
+# default
+
+name:                                                       # name of experiment run
+yaml:                                                       # config file (must be specified from command line)
+model: matchnerf                                            # type of model
+seed: 0                                                     # seed number (for both numpy and pytorch)
+gpu_ids: [0]                                                # GPU id list
+cpu: false                                                  # run only on CPU (not supported now)
+load:                                                       # load checkpoint from filename
+n_src_views: 3                                              # number of source views
+batch_size: 1                                              # batch size
+max_epoch: 12                                             # train to maximum number of epochs
+resume: false                                               # resume training (true for latest checkpoint, or number for specific epoch number)
+output_root: outputs                                         # root path for output files (checkpoints and results)
+vis_depth: false
+
+encoder:
+    attn_splits_list: [2]
+    cos_n_group: [2, 8]
+    pretrain_weight: configs/pretrained_models/gmflow_sintel-0c07dcb3.pth
+    num_transformer_layers: 6
+    feature_upsampler: network
+    upsample_factor: 2
+    use_multiview_gmflow: false
+    add_per_view_attn: false                                # only for multiview version of gmflow
+    wo_self_attn: false
+    feature_sample_local_radius: 0
+    feature_sample_local_dilation: 1
+
+decoder:                                                       # architectural options
+    net_width: 128
+    net_depth: 6
+    skip: [4]                                               # skip connections
+    posenc:                                                 # positional encoding
+        L_3D: 10                                            # number of bases (3D point)
+        L_view: 0                                           # number of bases (viewpoint)
+    raytrans_posenc: false
+    density_maskfill: false
+    raytrans_act: ReLU
+
+nerf:                                                       # NeRF-specific options
+    legacy_coord: true                                      # legacy coordinate adopted from the original codebase, to match the pretrain_weight
+    wo_render_interval: true
+    view_dep: true                                          # condition MLP on viewpoint
+    depth:                                                  # depth-related options
+        param: metric                                       # depth parametrization (for sampling along the ray)
+    sample_intvs: 128                                       # number of samples
+    sample_stratified: true                                 # stratified sampling, only used for training mode
+    density_noise_reg:                                      # Gaussian noise on density output as regularization
+    render_video: false
+
+tb:                                                         # TensorBoard options

@@ -1,0 +1,11 @@
+_parent_: configs/test.yaml
+
+nerf:
+    rand_rays_test: 20480                                         # number of random rays for each step
+    render_video: true
+    video_n_frames: 60
+    video_rads_scale: 0.3
+
+data_test:
+    llff:
+        test_views_method: fixed

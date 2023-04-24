@@ -1,0 +1,37 @@
+_parent_: configs/test.yaml
+
+name: test_video/colmap_own
+load: configs/pretrained_models/matchnerf_3v_ibr.pth
+
+encoder:
+    attn_splits_list: [4]
+
+decoder:                                                       # architectural options
+    density_maskfill: true
+    raytrans_posenc: true
+    raytrans_act: ELU
+
+nerf:
+    sample_intvs: 256                                       # number of samples
+    rand_rays_test: 5012                                         # number of random rays for each step
+    render_video: true
+    save_frames: false
+    save_gif: true
+    video_n_frames: 72
+    video_rads_scale: 0.3
+    video_pts_rates: 1.
+
+data_test:
+    llff: null
+    dtu: null
+    blender: null
+    colmap:
+        root_dir: docs/demo_data
+        dataset_name: colmap                                            # dataset name
+        img_wh: [960, 640]                                   # input image sizes [width, height]
+        num_workers: 4                                          # number of parallel workers for data loading
+        max_len: -1
+        scene_list: [printer]
+        test_views_method: fixed
+        render_path_mode: interpolate
+        nf_mode: minmax

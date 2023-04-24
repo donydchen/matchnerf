@@ -1,0 +1,70 @@
+_parent_: configs/base.yaml
+
+tb: true
+batch_size: 1                                                 # batch size (not used for NeRF/BARF)
+max_epoch: 60                                                  # train to maximum number of epochs (not used for NeRF/BARF)
+sanity_check: true
+
+encoder:
+    attn_splits_list: [4]
+
+decoder:                                                       # architectural options
+    density_maskfill: true
+    raytrans_posenc: true
+    raytrans_act: ELU
+
+nerf:
+    rand_rays_train: 1024                                   # number of random rays for each step 
+    rand_rays_val: 23552                                   # number of random rays for each step 
+    rand_rays_test: 23552                                   # number of random rays for each step 
+
+data_train:                                                       # data options
+    root_dir: data/IBRNet
+    dataset_name: ibrnet                                            # dataset name
+    img_wh: [1008, 756]                                   # input image sizes [width, height]
+    num_workers: 4                                          # number of parallel workers for data loading
+    max_len: -1
+
+data_val:
+    root_dir: data/IBRNet
+    dataset_name: ibrnet                                            # dataset name
+    img_wh: [1008, 756]                                   # input image sizes [width, height]
+    num_workers: 4                                          # number of parallel workers for data loading
+    max_len: 4
+
+data_test:
+    llff:
+        root_dir: data/nerf_llff_data
+        dataset_name: llff                                            # dataset name
+        img_wh: [1008, 756]                                   # input image sizes [width, height]
+        num_workers: 4                                          # number of parallel workers for data loading
+        max_len: -1
+        eval_mode: gpnr
+        report_full_scores: true
+
+loss_weight:                                                # loss weights (in log scale)
+    render: 1                                               # RGB rendering loss
+    render_fine:                                            # RGB rendering loss (for fine NeRF)
+
+optim:                                                      # optimization options
+    lr_enc: 5.e-5                                               
+    lr_dec: 5.e-4                                           
+    clip_enc: 1.
+    algo:
+        type: AdamW
+        weight_decay: 1.e-4
+    sched:                                                  # learning rate scheduling options
+        type: OneCycleLR                                 # scheduler (see PyTorch doc)
+        pct_start: 0.05
+        cycle_momentum: false
+        anneal_strategy: cos
+
+freq:                                                      # periodic actions during training
+    scalar: 20                                             # log losses and scalar states (every N iterations)
+    log_ep: 1
+    ckpt_ep: 5                                             # save checkpoint (every N epochs)
+    ckpt_it: -1                                           # save latest checkpoint (every ckpt_it * len(loader) iterations)
+    val_it: 1.                                            # validate model (every val_it * len(loader) iterations)
+    test_ep: 5                                             # test model (every N epochs)
+    test_ep_start: 0
+    test_it: -1

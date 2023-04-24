@@ -1,0 +1,33 @@
+_parent_: configs/base.yaml
+
+tb: false
+batch_size: 1                                                 # batch size (not used for NeRF/BARF)
+load: configs/pretrained_models/matchnerf_3v.pth
+
+nerf:
+    rand_rays_test: 20480                                         # number of random rays for each step
+
+data_test:
+    dtu:
+        root_dir: data/DTU
+        dataset_name: dtu                                            # dataset name
+        img_wh: [640, 512]                                   # input image sizes [width, height]
+        num_workers: 4                                          # number of parallel workers for data loading
+        max_len: -1
+        test_views_method: nearest
+    llff:
+        root_dir: data/nerf_llff_data
+        dataset_name: llff                                            # dataset name
+        img_wh: [960, 640]                                   # input image sizes [width, height]
+        num_workers: 4                                          # number of parallel workers for data loading
+        max_len: -1
+        scene_list:
+        test_views_method: nearest
+    blender:
+        root_dir: data/nerf_synthetic
+        dataset_name: blender                                            # dataset name
+        img_wh: [800, 800]                                   # input image sizes [width, height]
+        num_workers: 4                                          # number of parallel workers for data loading
+        max_len: -1
+        scene_list:
+        test_views_method: nearest
