@@ -1,20 +1,20 @@
 <div>
-<img src='https://i.imgur.com/tFP6Q3p.gif' align="right" height="120px" width="180px" alt='house'>
-<img src='https://i.imgur.com/Tq07diD.gif' align="right" height="120px" width="66px" alt='sculpture'>
+<!-- <img src='https://i.imgur.com/tFP6Q3p.gif' align="right" height="120px" width="180px" alt='house'> -->
+<img src='https://i.imgur.com/Tq07diD.gif' align="right" height="120px" width="66px" alt='sculpture'> 
 <img src='https://i.imgur.com/3boKX8u.gif' align="right" height="120px" width="180px" alt='printer'> 
 </div>
 
-<br><br><br>
+<br><br><br><br>
 
 # MatchNeRF
 
 
-### [Paper](https://arxiv.org/abs/) | [Project Page](https://donydchen.github.io/matchnerf) | [Code](https://github.com/donydchen/matchnerf)
+### [Paper](http://arxiv.org/abs/2304.12294) | [Project Page](https://donydchen.github.io/matchnerf) | [Code](https://github.com/donydchen/matchnerf)
 
 Official PyTorch implementation for MatchNeRF, a new generalizable NeRF method that employs explicit correspondence matching statistics as the geometry prior and can perform novel view synthesis on unseen scenarios with as few as two source views. <br>
 
 
-**[Explicit Correspondence Matching for Generalizable Neural Radiance Fields](https://donydchen.github.io/matchnerf)**  
+**[Explicit Correspondence Matching for Generalizable Neural Radiance Fields](http://arxiv.org/abs/2304.12294)**  
 [Yuedong Chen](https://donydchen.github.io/)<sup>1</sup>,
 [Haofei Xu](https://haofeixu.github.io/)<sup>2</sup>,
 [Qianyi Wu](https://qianyiwu.github.io/)<sup>1</sup>,
@@ -173,7 +173,7 @@ If you use this project for your research, please cite our paper.
 @article{chen2023matchnerf,
     title={Explicit Correspondence Matching for Generalizable Neural Radiance Fields},
     author={Chen, Yuedong and Xu, Haofei and Wu, Qianyi and Zheng, Chuanxia and Cham, Tat-Jen and Cai, Jianfei},
-    journal={arXiv preprint arXiv:},
+    journal={arXiv preprint arXiv:2304.12294},
     year={2023}
 }
 ```
