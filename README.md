@@ -11,7 +11,7 @@
 
 ### [Paper](http://arxiv.org/abs/2304.12294) | [Project Page](https://donydchen.github.io/matchnerf) | [Code](https://github.com/donydchen/matchnerf)
 
-Official PyTorch implementation for MatchNeRF, a new generalizable NeRF method that employs explicit correspondence matching statistics as the geometry prior and can perform novel view synthesis on unseen scenarios with as few as two source views. <br>
+Official PyTorch implementation for MatchNeRF, a new generalizable NeRF method that employs explicit correspondence matching as the geometry prior and can perform novel view synthesis on unseen scenarios with as few as two source views. <br>
 
 
 **[Explicit Correspondence Matching for Generalizable Neural Radiance Fields](http://arxiv.org/abs/2304.12294)**  
