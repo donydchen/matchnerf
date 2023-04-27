@@ -9,20 +9,21 @@
 # MatchNeRF
 
 
-### [Paper](http://arxiv.org/abs/2304.12294) | [Project Page](https://donydchen.github.io/matchnerf) | [Code](https://github.com/donydchen/matchnerf)
-
-Official PyTorch implementation for MatchNeRF, a new generalizable NeRF method that employs explicit correspondence matching as the geometry prior and can perform novel view synthesis on unseen scenarios with as few as two source views. <br>
 
 
-**[Explicit Correspondence Matching for Generalizable Neural Radiance Fields](http://arxiv.org/abs/2304.12294)**  
-[Yuedong Chen](https://donydchen.github.io/)<sup>1</sup>,
+Official PyTorch implementation for MatchNeRF, a new generalizable NeRF method that employs **explicit correspondence matching** as the geometry prior and can perform novel view synthesis on unseen scenarios with as few as two source views. <br>
+
+
+>**[Explicit Correspondence Matching for Generalizable Neural Radiance Fields](http://arxiv.org/abs/2304.12294)**  
+>[Yuedong Chen](https://donydchen.github.io/)<sup>1</sup>,
 [Haofei Xu](https://haofeixu.github.io/)<sup>2</sup>,
 [Qianyi Wu](https://qianyiwu.github.io/)<sup>1</sup>,
 [Chuanxia Zheng](https://www.chuanxiaz.com/)<sup>3</sup>,
 [Tat-Jen Cham](https://personal.ntu.edu.sg/astjcham/)<sup>4</sup>,
 [Jianfei Cai](https://jianfei-cai.github.io/)<sup>1</sup>  
-<sup>1</sup>Monash University, <sup>2</sup>ETH Zurich, <sup>3</sup>University of Oxford, <sup>4</sup>Nanyang Technological University  
+><sup>1</sup>Monash University, <sup>2</sup>ETH Zurich, <sup>3</sup>University of Oxford, <sup>4</sup>Nanyang Technological University  
 arXiv 2023
+### [Paper](http://arxiv.org/abs/2304.12294) | [Project Page](https://donydchen.github.io/matchnerf) | [Code](https://github.com/donydchen/matchnerf)
 
 <img src="docs/matchnerf.png">
 
