@@ -13,6 +13,7 @@ max_epoch: 12                                             # train to maximum num
 resume: false                                               # resume training (true for latest checkpoint, or number for specific epoch number)
 output_root: outputs                                         # root path for output files (checkpoints and results)
 vis_depth: false
+separate_save: false                                           # save images separately for further evaluation
 
 encoder:
     attn_splits_list: [2]

@@ -26,7 +26,7 @@ def main():
         if opt.nerf.render_video:
             m.test_model_video(leave_tqdm=True)
         else:
-            m.test_model(leave_tqdm=True)
+            m.test_model(leave_tqdm=True, separate_save=opt.separate_save)
 
 
 if __name__ == "__main__":

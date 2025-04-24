@@ -31,3 +31,13 @@ data_test:
         max_len: -1
         scene_list:
         test_views_method: nearest
+    tnt:
+        root_dir: data/tnt_data
+        dataset_name: tnt                                            # dataset name
+        img_wh: [960, 640]                                   # input image sizes [width, height]
+        num_workers: 4                                          # number of parallel workers for data loading
+        max_len: -1
+        scene_list:
+        test_views_method: nearest
+        eval_mode: mvsnerf
+        nf_mode: minmax

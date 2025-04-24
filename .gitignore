@@ -165,10 +165,14 @@ configs/pretrained_models/*.pth
 configs/pretrained_models/*.py
 configs/pretrained_models/*.tar
 configs/*_local.yaml
+configs/test_dtu.yaml
+configs/test_llff.yaml
 data/DTU
 data/nerf_synthetic
 data/nerf_llff_data
 data/colmap*
 data/IBRNet
+data/tnt_data
 outputs
 run.sh
+debug_scripts

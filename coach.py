@@ -366,7 +366,7 @@ class Coach():
         self.model.train()
 
     @torch.no_grad()
-    def test_model(self, ep=None, send_log=True, save_images=True, leave_tqdm=False, is_sanity_check=False):
+    def test_model(self, ep=None, send_log=True, save_images=True, leave_tqdm=False, is_sanity_check=False, separate_save=False):
         assert hasattr(self, 'test_loaders'), "Must load the test data for testing."
         test_outroot = os.path.join(self.opts.output_path, 'test')
         os.makedirs(test_outroot, exist_ok=True)
@@ -396,7 +396,7 @@ class Coach():
                 img_hw = batch['img_wh'][0].numpy().tolist()[::-1]
                 pred_rgb = var['rgb'].reshape(batch_size, *img_hw, -1)
                 pred_depth = var['depth'].reshape(batch_size, *img_hw)
-                if save_images:
+                if save_images or separate_save:
                     for batch_idx, cur_rgb in enumerate(pred_rgb):
                         pred_rgb_nb = (cur_rgb.detach().cpu().numpy() * 255).astype('uint8')
                         gt_rgb_nb = (var.images[batch_idx, -1].permute(1, 2, 0).detach().cpu().numpy() * 255).astype('uint8')
@@ -410,12 +410,20 @@ class Coach():
                             img_vis = np.concatenate([pred_rgb_nb, gt_rgb_nb], axis=1)
 
                         src_ids_str = '_'.join([f'{x:02d}' for x in batch['view_ids'][batch_idx][:self.n_src_views]])
-                        out_name = f"{batch['scene'][batch_idx]}_view{batch['view_ids'][batch_idx][-1]:02d}_src{src_ids_str}.jpg"
+                        out_name = f"{batch['scene'][batch_idx]}_view{batch['view_ids'][batch_idx][-1]:02d}_src{src_ids_str}"
                         if hasattr(self, 'it'):
                             out_name = f"it{self.it}_{out_name}"
                         if ep is not None:
                             out_name = f"ep{ep}_{out_name}"
-                        imageio.imwrite(os.path.join(data_outdir, out_name), img_vis)
+
+                        if separate_save:
+                            imageio.imwrite(os.path.join(data_outdir, f"{out_name}_pred.png"), pred_rgb_nb)
+                            imageio.imwrite(os.path.join(data_outdir, f"{out_name}_gt.png"), gt_rgb_nb)
+                            src_imgs = (var.images[batch_idx, :-1].permute(0, 2, 3, 1).detach().cpu().numpy() * 255).astype('uint8')
+                            for src_idx, src_img in enumerate(src_imgs):
+                                imageio.imwrite(os.path.join(data_outdir, f"{out_name}_{src_idx}_src.png"), src_img)
+                        else:
+                            imageio.imwrite(os.path.join(data_outdir, f"{out_name}.png"), img_vis)
 
                 # log metric
                 for batch_idx, cur_rgb in enumerate(pred_rgb):
