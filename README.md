@@ -1,14 +1,12 @@
 <div>
 <!-- <img src='https://i.imgur.com/tFP6Q3p.gif' align="right" height="120px" width="180px" alt='house'> -->
-<img src='https://i.imgur.com/Tq07diD.gif' align="right" height="120px" width="66px" alt='sculpture'> 
-<img src='https://i.imgur.com/3boKX8u.gif' align="right" height="120px" width="180px" alt='printer'> 
+<img src='https://i.imgur.com/lGrPf3K.gif' align="right" height="120px" width="66px" alt='sculpture'> 
+<img src='https://i.imgur.com/3NPLzdS.gif' align="right" height="120px" width="180px" alt='printer'> 
 </div>
 
 <br><br><br><br>
 
 # MatchNeRF
-
-
 
 
 Official PyTorch implementation for MatchNeRF, a new generalizable NeRF approach that employs **explicit correspondence matching** as the geometry prior and can perform novel view synthesis on unseen scenarios with as few as two source views as input, **without requiring any retraining and fine-tuning**. <br>
@@ -22,15 +20,21 @@ Official PyTorch implementation for MatchNeRF, a new generalizable NeRF approach
 [Tat-Jen Cham](https://personal.ntu.edu.sg/astjcham/)<sup>4</sup>,
 [Jianfei Cai](https://jianfei-cai.github.io/)<sup>1</sup>  
 ><sup>1</sup>Monash University, <sup>2</sup>ETH Zurich, <sup>3</sup>University of Oxford, <sup>4</sup>Nanyang Technological University  
-arXiv 2023
-### [Paper](http://arxiv.org/abs/2304.12294) | [Project Page](https://donydchen.github.io/matchnerf) | [Code](https://github.com/donydchen/matchnerf)
+> arXiv 2023
+
+<p align="center">
+  <h3 align="center"><a href="http://arxiv.org/abs/2304.12294">Paper</a> | <a href="https://donydchen.github.io/matchnerf">Project Page</a> | <a href="https://github.com/donydchen/matchnerf">Code</a> | <a href="https://huggingface.co/donydchen/matchnerf">Model 🤗</a> </h3>
+  <div align="center"></div>
+</p>
 
 <img src="docs/matchnerf.png">
 
 
 <details>
-  <summary>Recent Updates</summary>
+  <summary>⚡️ Recent Updates</summary>
 
+* `24-Apr-2025`: added experiments on Tanks-and-Temples.
+* `24-Apr-2025`: reupload model and data to huggingface 🤗.
 * `25-Apr-2023`: released MatchNeRF codes and models.
 
 </details>
@@ -48,6 +52,7 @@ arXiv 2023
   * [DTU (for both training and testing)](#dtu-for-both-training-and-testing)
   * [Blender (for testing only)](#blender-for-testing-only)
   * [Real Forward Facing (for testing only)](#real-forward-facing-for-testing-only)
+  * [Tanks and Temples (for testing only)](#tanks-and-temples-for-testing-only)
 * [Testing](#testing)
 * [Training](#training)
 * [Rendering Video](#rendering-video)
@@ -67,7 +72,36 @@ conda activate matchnerf
 pip install -r requirements.txt
 ```
 
-For rendering video output, it requires `ffmpeg` to be installed on the system, you can double check by running `ffmpeg -version`. If `ffmpeg` does not exist, consider installing it by running `conda install ffmpeg`.
+Trouble shootings:
+
+<details>
+  <summary><b>Run on CUDA-12</b></summary>
+This project has also been tested in an environment using CUDA 12. The recommended PyTorch installation is:
+
+```bash
+pip install torch==2.1.0 torchvision==0.16.0 --index-url https://download.pytorch.org/whl/cu121
+```
+</details>
+
+<details>
+  <summary><b>Failed when rendering video</b></summary>
+To render video outputs, `ffmpeg` must be installed on your system. You can verify the installation by running `ffmpeg -version`. If `ffmpeg` is not found, you can install it using:
+
+```bash
+conda install ffmpeg
+```
+
+</details>
+
+<details>
+  <summary><b>Failed when calculating SSIM scores</b></summary>
+Due to compatibility issues, this project depends on an older version of `scikit-image`. Please install the appropriate version using:
+
+```bash
+pip install scikit_image==0.19.2
+```
+</details>
+
 
 ## Download Datasets
 
@@ -86,17 +120,22 @@ data/DTU/
 
 ### Blender (for testing only)
 
-* Download [nerf_synthetic.zip](https://drive.google.com/drive/folders/128yBriW1IG_3NJ5Rp7APSTZsJqdJdfc1) and extract to `data/nerf_synthetic`.
+* Download [nerf_synthetic.zip 🤗](https://huggingface.co/donydchen/matchnerf/resolve/main/nerf_synthetic.zip) and extract to `data/nerf_synthetic`.
 
 ### Real Forward Facing (for testing only)
 
-* Download [nerf_llff_data.zip](https://drive.google.com/drive/folders/128yBriW1IG_3NJ5Rp7APSTZsJqdJdfc1) and extract to `data/nerf_llff_data`.
+* Download [nerf_llff_data.zip 🤗](https://huggingface.co/donydchen/matchnerf/resolve/main/nerf_llff_data.zip) and extract to `data/nerf_llff_data`.
+
+### Tanks and Temples (for testing only)
+
+* Download [tnt_data.zip 🤗](https://huggingface.co/donydchen/matchnerf/resolve/main/tnt_data.zip) and extract to `data/tnt_data`.
+
 
 ## Testing
 
 ### MVSNeRF Setting (3 Nearest Views)
 
-Download the pretrained model [matchnerf_3v.pth](https://drive.google.com/file/d/1Powy38EOtsrMYN7nh5rx5ySMJ7LUgGSq) and save to `configs/pretrained_models/matchnerf_3v.pth`, then run
+Download the pretrained model [matchnerf_3v.pth 🤗](https://huggingface.co/donydchen/matchnerf/resolve/main/matchnerf_3v.pth) and save to `configs/pretrained_models/matchnerf_3v.pth`, then run
 
 ```bash
 python test.py --yaml=test --name=matchnerf_3v
@@ -111,10 +150,11 @@ Performance should be exactly the same as below,
 | DTU                  | 26.91 | 0.934 | 0.159 |
 | Real Forward Facing  | 22.43 | 0.805 | 0.244 |
 | Blender | 23.20 | 0.897 | 0.164 |
+| Tanks and Temples | 21.94 | 0.840 |  0.258
 
 ## Training
 
-Download the GMFlow pretrained weight ([gmflow_sintel-0c07dcb3.pth](https://drive.google.com/file/d/1d5C5cgHIxWGsFR1vYs5XrQbbUiZl9TX2/view)) from  the original [GMFlow repo](https://github.com/haofeixu/gmflow), and save it to `configs/pretrained_models/gmflow_sintel-0c07dcb3.pth`, then run
+Download the GMFlow pretrained weight ([gmflow_sintel-0c07dcb3.pth 🤗](https://huggingface.co/donydchen/matchnerf/resolve/main/gmflow_sintel-0c07dcb3.pth)) from  the original [GMFlow repo](https://github.com/haofeixu/gmflow), and save it to `configs/pretrained_models/gmflow_sintel-0c07dcb3.pth`, then run
 
 ```bash
 python train.py --yaml=train
@@ -145,7 +185,7 @@ Results (without any per-scene fine-tuning) should be similar as below,
 
 ## Use Your Own Data
 
-* Download the model ([matchnerf_3v_ibr.pth](https://drive.google.com/file/d/1eGY_pkPxxWiSbGFn-Ype8JvW9GqYVfiq)) pretrained with IBRNet data (follow 'GPNR Setting 1'), and save it to `configs/pretrained_models/matchnerf_3v_ibr.pth`.
+* Download the model ([matchnerf_3v_ibr.pth 🤗](https://huggingface.co/donydchen/matchnerf/resolve/main/matchnerf_3v_ibr.pth)) pretrained with IBRNet data (follow 'GPNR Setting 1'), and save it to `configs/pretrained_models/matchnerf_3v_ibr.pth`.
 * Following the instructions detailed in the [LLFF repo](https://github.com/Fyusion/LLFF#1-recover-camera-poses), use [img2poses.py](https://github.com/Fyusion/LLFF/blob/master/imgs2poses.py) to recover camera poses.
 * Update the colmap data loader at `datasets/colmap.py` accordingly.
 
