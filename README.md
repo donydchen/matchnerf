@@ -72,7 +72,7 @@ conda activate matchnerf
 pip install -r requirements.txt
 ```
 
-Trouble shootings:
+Troubleshooting:
 
 <details>
   <summary><b>Run on CUDA-12</b></summary>
