@@ -1,10 +1,10 @@
 <div>
-<img src='https://donydchen.github.io/matchnerf/img/tFP6Q3p.gif' align="right" height="120px" width="200px" alt='house'>
+<!-- <img src='https://donydchen.github.io/matchnerf/img/tFP6Q3p.gif' align="right" height="120px" width="200px" alt='house'> -->
 <img src='https://donydchen.github.io/matchnerf/img/Tq07diD.gif' align="right" height="120px" width="66px" alt='sculpture'> 
 <img src='https://donydchen.github.io/matchnerf/img/3boKX8u.gif' align="right" height="120px" width="180px" alt='printer'> 
 </div>
 
-<br><br>
+<br><br><br>
 
 # MatchNeRF
 
