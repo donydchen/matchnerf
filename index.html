@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MatchNeRF</title>
+
+<!-- Twitter / Open Graph -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MatchNeRF: Explicit Correspondence Matching for Generalizable Neural Radiance Fields">
+<meta name="twitter:description" content="A generalizable NeRF method that performs novel view synthesis with as few as two source views using explicit correspondence matching.">
+<meta name="twitter:image" content="https://donydchen.github.io/matchnerf/img/pipeline.png">
+<meta property="og:title" content="MatchNeRF">
+<meta property="og:description" content="Explicit Correspondence Matching for Generalizable Neural Radiance Fields">
+<meta property="og:image" content="https://donydchen.github.io/matchnerf/img/pipeline.png">
+
+<!-- Fonts & Icons -->
+<link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<!-- Styles -->
+<link rel="stylesheet" href="css/app.css">
+
+</head>
+
+<body>
+
+<header>
+<div class="dropdown-container">
+    <a class="homebtn" href="https://donydchen.github.io" target="_blank">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+    </a>
+
+    <div class="dropdown">
+        <button class="dropbtn" id="dropdownBtn">
+            Related Research <i class="fas fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content" id="dropdownContent">
+            <a href="https://haofeixu.github.io/murf/" target="_blank">MuRF (CVPR24)</a>
+            <a href="https://donydchen.github.io/mvsplat/" target="_blank">MVSplat (ECCV24 Oral)</a>
+            <a href="https://donydchen.github.io/mvsplat360/" target="_blank">MVSplat360 (NeurIPS24)</a>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <h1 class="title"><span class="match-title">Match</span><span class="nerf-title">NeRF</span></h1>
+    <p class="subtitle">Explicit Correspondence Matching for Generalizable Neural Radiance Fields</p>
+    <a href="https://doi.org/10.1109/TPAMI.2025.3598711" class="publication-info tpami-button" target="_blank">TPAMI 2025</a>
+
+    <div class="authors">
+        <div class="author"><a href="https://donydchen.github.io/">Yuedong Chen</a><span class="author-affiliation">Monash University</span></div>
+        <div class="author"><a href="https://haofeixu.github.io/">Haofei Xu</a><span class="author-affiliation">ETH Zurich</span></div>
+        <div class="author"><a href="https://wuqianyi.top">Qianyi Wu</a><span class="author-affiliation">Monash University</span></div>
+        <div class="author"><a href="https://www.chuanxiaz.com">Chuanxia Zheng</a><span class="author-affiliation">University of Oxford</span></div>
+        <div class="author"><a href="https://personal.ntu.edu.sg/astjcham/">Tat-Jen Cham</a><span class="author-affiliation">Nanyang Technological University</span></div>
+        <div class="author"><a href="https://jianfei-cai.github.io">Jianfei Cai</a><span class="author-affiliation">Monash University</span></div>
+    </div>
+
+    <div class="nav-buttons">
+        <a href="http://arxiv.org/abs/2304.12294" class="nav-button"><i class="fas fa-file-pdf"></i><strong>Paper</strong></a>
+        <a href="https://github.com/donydchen/matchnerf" class="nav-button"><i class="fab fa-github"></i><strong>Code</strong></a>
+        <a href="https://huggingface.co/donydchen/matchnerf" class="nav-button hf-button" target="_blank"><img src="https://huggingface.co/front/assets/huggingface_logo.svg" alt="Hugging Face"><strong>Model</strong></a>
+        <a href="https://ieeexplore.ieee.org/document/11123768/media#media" class="nav-button"><i class="fas fa-video"></i><strong>Video</strong></a>
+    </div>
+</div>
+</header>
+
+<main>
+<!-- Abstract -->
+<section>
+<div class="container">
+<h2 class="section-title">Abstract</h2>
+<div class="abstract-content">
+<div class="abstract-text">
+<img src="https://donydchen.github.io/matchnerf/img/eREDjzw.png" alt="MatchNeRF overview" class="abstract-image img-responsive">
+                        <p>We present a new generalizable NeRF method that is able to directly generalize to new unseen scenarios and perform novel view synthesis with as few as two source views. The key to our approach lies in the explicitly modeled correspondence matching information, so as to provide the geometry prior to the prediction of NeRF color and density for volume rendering. The <strong>explicit correspondence matching</strong> is quantified with the cosine similarity between image features sampled at the 2D projections of a 3D point on different views, which is able to provide reliable cues about the surface geometry. Unlike previous methods where image features are extracted independently for each view, we consider modeling the <strong>cross-view interactions</strong> via Transformer cross-attention, which greatly improves the feature matching quality. Our method achieves state-of-the-art results on different evaluation settings, with the experiments showing a strong correlation between our learned cosine feature similarity and volume density, demonstrating the effectiveness and superiority of our proposed method.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Model Architecture -->
+<section>
+<div class="container">
+<h2 class="section-title">Model Architecture</h2>
+<div class="architecture-card">
+<div class="architecture-image"><img src="https://donydchen.github.io/matchnerf/img/pipeline.png" alt="MatchNeRF architecture"></div>
+<div class="architecture-caption">
+<b>MatchNeRF overview</b>. Given \(N\) input images, we extract the Transformer features and compute
+                    the cosine
+                    similarity in a pair-wise manner, and finally merge all pair-wise cosine similarities with
+                    element-wise average.
+                    <b>I)</b> For image pair \(I_i\) and \(I_j\), we first extract downsampled convolutional features
+                    with a
+                    weight-sharing CNN. The convolutional features are then fed into a Transformer to model cross-view
+                    interactions with
+                    cross-attention. <b>II)</b> To predict the color and volume density of a point on a ray for
+                    volume rendering, we project the 3D point into the 2D Transformer features \(F_i\) and \(F_j\) with
+                    the camera
+                    parameters and bilinearly sample the feature vectors \(f_i\) and \(f_j\) at the projected locations.
+                    We then
+                    compute the cosine similarity \(z = \cos(f_i, f_j)\) between sampled features to encode the
+                    correspondence matching information. <b>III)</b> \(z\) is next used with the 3D position
+                    \(p\) and 2D view direction \(d\) for color \(c\) and density \(\sigma\) prediction. An additional
+                    ray Transformer
+                    is used to model cross-point interactions along a ray.
+</div>
+</div>
+</div>
+</section>
+
+<!-- In-the-Wild Inference -->
+<section>
+<div class="container">
+<h2 class="section-title">Direct Inference on In-the-Wild Unseen Scenes</h2>
+
+<div class="inference-pair">
+<div class="inference-card input-card"><div class="inference-image"><img src="https://donydchen.github.io/matchnerf/img/iVFESPu.png" alt="Input scene"></div><div class="inference-caption">Input</div></div>
+<div class="inference-card output-card"><div class="inference-image"><img src="https://donydchen.github.io/matchnerf/img/3boKX8u.gif" alt="Output novel view"></div><div class="inference-caption">Output</div></div>
+</div>
+
+<div class="inference-pair">
+<div class="inference-card input-card"><div class="inference-image"><img src="https://donydchen.github.io/matchnerf/img/3aoAbIa.jpg" alt="Queen Victoria Monument input"></div><div class="inference-caption">Input (courtesy of <a href="https://wuqianyi.top">Qianyi</a>, taken at <a href="https://monumentaustralia.org.au/themes/people/imperial/display/90817-queen-victoria">Queen Victoria Monument</a>)</div></div>
+<div class="inference-card output-card" style="flex:1 1 12.5%;"><div class="inference-image"><img src="https://donydchen.github.io/matchnerf/img/Tq07diD.gif" alt="Queen Victoria Monument output"></div><div class="inference-caption">Output</div></div>
+</div>
+
+<div class="inference-pair">
+<div class="inference-card input-card"><div class="inference-image"><img src="https://donydchen.github.io/matchnerf/img/PMVoA76.png" alt="Input scene"></div><div class="inference-caption">Input</div></div>
+<div class="inference-card output-card" style="flex:1 1 40%;"><div class="inference-image"><img src="https://donydchen.github.io/matchnerf/img/tFP6Q3p.gif" alt="Output novel view"></div><div class="inference-caption">Output</div></div>
+</div>
+
+</div>
+</section>
+
+<!-- Benchmark -->
+<section>
+<div class="container">
+<h2 class="section-title">Direct Inference on Benchmark Test Scenes</h2>
+<div class="benchmark-grid">
+<div class="benchmark-card"><div class="benchmark-image"><img src="https://donydchen.github.io/matchnerf/img/r2vtiaL.gif" alt="Flowers scene novel view"></div><div class="benchmark-caption">DTU: Scan38, View24</div></div>
+<div class="benchmark-card"><div class="benchmark-image"><img src="https://donydchen.github.io/matchnerf/img/eMZjC1K.gif" alt="Orchids scene novel view"></div><div class="benchmark-caption">Blender: Materials, View36</div></div>
+<div class="benchmark-card"><div class="benchmark-image"><img src="https://donydchen.github.io/matchnerf/img/oLaKtMX.gif" alt="Orchids scene novel view"></div><div class="benchmark-caption">RFF: Leaves, View13</div></div>
+</div>
+<div class="all-results-container"><a href="https://github.com/donydchen/matchnerf#rendering-video" class="all-results-button">All Results</a></div>
+</div>
+</section>
+
+<!-- Quantitative -->
+<section>
+<div class="container">
+<h2 class="section-title">Quantitative Comparisons</h2>
+<div class="architecture-card">
+<div class="architecture-image"><img src="img/benchmark_results.png" alt="MatchNeRF comparisons"></div>
+<div class="architecture-caption">
+<b>Comparison with SOTA methods</b>. 
+MatchNeRF performs the best for both 3- and 2-view inputs. Viewpoints <em>nearest</em> to the target one are selected as input. By default we measure over only <em>the foreground or central regions</em> following MVSNeRF's settings, while <sup>\(\top\)</sup> indicates a more accurate metric by measuring over <em>the whole image</em>. GeoNeRF is retrained without depth supervision for fair comparison. We measure MVSNeRF's 3-view whole image results with its pretrained weight, and retrain with its released code to report 2-view results. 
+</div>
+</div>
+</div>
+</section>
+
+<!-- Acknowledgements & BibTeX -->
+<section class="special-section">
+<div class="container">
+<h3 class="section-title">Acknowledgements</h3>
+<div class="special-content">
+This research is supported by the Monash FIT Start-up Grant. Dr. Chuanxia Zheng is supported by EPSRC SYN3D EP/Z001811/1.
+</div>
+</div>
+</section>
+
+<section class="special-section">
+<div class="container">
+<h3 class="section-title">BibTeX</h3>
+<pre class="citation special-bib">
+@article{chen2025explicit,
+  title={Explicit correspondence matching for generalizable neural radiance fields},
+  author={Chen, Yuedong and Xu, Haofei and Wu, Qianyi and Zheng, Chuanxia and Cham, Tat-Jen and Cai, Jianfei},
+  journal={IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  year={2025},
+  publisher={IEEE}
+}</pre>
+</div>
+</section>
+</main>
+
+<footer>
+<div class="container">
+<p style="font-size:0.9rem; color:#cbd5e1; text-align:center; line-height:1.5;">
+This page was vibe coded with <a href="https://huggingface.co/spaces/akhaliq/anycoder" target="_blank" style="color:#cbd5e1;text-decoration:underline;">AnyCoder</a> and <a href="https://chatgpt.com/" target="_blank" style="color:#cbd5e1;text-decoration:underline;">ChatGPT</a>. Source code is <a href="https://github.com/donydchen/donydchen.github.io/tree/master/matchnerf" target="_blank" style="color:#cbd5e1;text-decoration:underline;">HERE</a>.<br><br>
+Please contact <a href="http://donydchen.github.io/" style="color:#cbd5e1;text-decoration:underline;">Donny</a> for feedback and questions.
+</p>
+</div>
+</footer>
+
+<script src="js/app.js"></script>
+
+
+</body>
+</html>
