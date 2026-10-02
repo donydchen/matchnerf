@@ -41,7 +41,7 @@ class EvalTools(object):
         return psnr
 
     def get_ssim(self, pred_img, gt_img, **kwargs):
-        ssim = structural_similarity(pred_img, gt_img, channel_axis=-1)
+        ssim = structural_similarity(pred_img, gt_img, channel_axis=-1, data_range=1.0)
         return ssim
 
     @torch.no_grad()
