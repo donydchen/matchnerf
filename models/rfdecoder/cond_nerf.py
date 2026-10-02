@@ -44,10 +44,13 @@ class CondNeRF(NeRF):
             self.output_linear = torch.nn.Linear(W, 3 + 1)
 
         self.pts_linears.apply(self.weights_init)
-        self.views_linears.apply(self.weights_init)
-        self.feature_linear.apply(self.weights_init)
-        self.alpha_linear.apply(self.weights_init)
-        self.rgb_linear.apply(self.weights_init)
+        if opt.nerf.view_dep:
+            self.views_linears.apply(self.weights_init)
+            self.feature_linear.apply(self.weights_init)
+            self.alpha_linear.apply(self.weights_init)
+            self.rgb_linear.apply(self.weights_init)
+        else:
+            self.output_linear.apply(self.weights_init)
 
     def forward(self, opt, points_3D, ray_unit=None, cond_info=None, mode=None):
         pos_enc_func = self.positional_encoding_legacy if opt.nerf.legacy_coord else self.positional_encoding
